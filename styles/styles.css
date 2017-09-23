@@ -1,0 +1,23 @@
+.outtable {
+  margin: 0 auto;
+  font-size: 0;
+  border-collapse: collapse;
+  border: 3px solid;
+  max-width: 70%;
+}
+.outtable td,
+.outtable tr,
+.outtable th {
+  font-size: 20px;
+  margin: 0;
+  padding: 3px;
+  border: 1px solid;
+}
+.outtable a {
+  text-decoration: none;
+  color: black;
+}
+.outtable .vopros {
+  min-width: 300px;
+  text-align: left;
+}
