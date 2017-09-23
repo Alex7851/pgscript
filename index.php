@@ -15,7 +15,7 @@ $sql="SELECT table_name FROM information_schema.tables
 $s=$pdo->query($sql);
 $u=$s->fetchAll(PDO::FETCH_COLUMN, 0)
 		?>
-<form action="workform/index.php" method="post">
+<form action="workform/mainform.php" method="post">
 	<select name="select" size="1">
 	<?php	foreach ($u as $item):	?>
     <option  value="<?php	echo $item ?>"><?php	echo $item	?></option>

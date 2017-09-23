@@ -1,51 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Document</title>
-	<link rel="stylesheet" href="../styles/styles.css">
-</head>
-<body>
-	<?php		include_once $_SERVER['DOCUMENT_ROOT'] . "/directorys/fragments/pdo.php";
+<?php	
+	include_once $_SERVER['DOCUMENT_ROOT'] . "/directorys/fragments/pdo.php";
 
-	$sql="SELECT column_name, column_default, data_type 
-	FROM INFORMATION_SCHEMA.COLUMNS 
-	WHERE table_name = :tableName";
+if (isset($_POST['delete']) and $_POST['delete']=='Удалить') {
+	if (!isset($_POST['chbxarray'])) {$message= "Не выбраны строки для удаления!";
+ $pathformessage="../workform/mainform.php";
+  include $_SERVER['DOCUMENT_ROOT'] . "/directorys/fragments/msg.html";
+  exit();}
+$tableName=$_POST['transferTableName'];
+	$sql="DELETE FROM $tableName WHERE id=:id";
+	$s=$pdo->prepare($sql);
 
-	$s=$pdo->query($sql);
-	$resultcolumn=$s->fetchAll();
-	$listOfColumns="";
+	foreach ($_POST['chbxarray'] as $itemId) {
 
-	foreach ($resultcolumn as $item) {
-		
-			$listOfColumns=$listOfColumns . $item['column_name'] .', ';
-		
+		$s->bindValue(":id", $itemId);
+		$s->execute();
 	}
+}
 
-	 $listOfColumns= substr($listOfColumns, 0, -2);
-		$sql="SELECT $listOfColumns FROM :tableName";
-		$s=$pdo->query($sql);
-		$u=$s->fetchAll(); ?>
-<form action="" method="post">
-	<table class="outtable">
-		<?php	foreach ($u as $item) : 
-		?>
-		
-		
-		<tr>
-			<?php	foreach ($resultcolumn as $item2) :
-				$columnName=$item2['column_name'];
-				if ($columnName<>'id') :
-				?>
-				<td><?php	echo $item[$columnName]	?></td>
-			<?php	endif; endforeach	?> <td><input type="checkbox" name="chbxarray[]" value="<?php	echo $item['id']	?>"></td>
-		</tr>
-		<?php	endforeach	?>
-	</table>
-
-	<input type="submit" name="delete" value="Удалить">
-</form>
-</body>
-</html>
