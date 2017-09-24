@@ -11,11 +11,14 @@
 <form action="index.php" method="post">
 	
 <?php	for ($i=1; $i<$numberFields; $i++):	?>
-<input type="text" name="stringOfValues[]">
+<input type="text" name="stringOfValues[]" value="<?php	if (isset($_POST['editButton']) and $_POST['editButton']=='Редактировать') {
+	echo $masOfEditValues[0][$i-1];
+}	?>">
 <?php	endfor	?>
-<input type="submit" name="addFieldsButton" value="Добавить">
+<input type="submit" name="addFieldsButton" value="<?php echo $buttonName ?>">
 <input type="hidden" name="tableName" value="<?php	echo $tableName	?>">
-<input type="hidden" name="listOfColumnsWithoutId" value="<?php	echo $listOfColumnsWithoutId	?>">
+<input type="hidden" name="idForEdit" value="<?php	if (isset($id))  echo $id	?>">
+<input type="hidden" name="listOfColumnsWithoutId"  value="<?php	echo $listOfColumnsWithoutId ?>">
 
 
 </form>

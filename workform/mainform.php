@@ -50,6 +50,9 @@
 		<?php	endforeach	?>
 	</table>
 	<input type="hidden" name="transferTableName" value="<?php	echo $tableName	?>">
+	<input type="hidden" name="numberFields" value="<?php	echo count($resultcolumn)	?>">
+	<input type="hidden" name="listOfColumnsWithoutId" value="<?php	echo $listOfColumnsWithoutId	?>">
+	<input type="submit" name="editButton" value="Редактировать">
 	<input type="submit" name="delete" value="Удалить">
 	<a href="..">Вернуться</a>
 
