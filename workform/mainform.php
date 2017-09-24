@@ -52,5 +52,10 @@
 	<a href="..">Вернуться</a>
 
 </form>
+<?php	PRINT_R($resultcolumn['column_name'])	?>
+<form action="index.php" method="post">
+	<input type="submit" name="addButton" value="Добавить">
+	<input type="hidden" name="transferTableName" value="<?php	echo $tableName	?>">
+</form>
 </body>
 </html>

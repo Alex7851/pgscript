@@ -15,8 +15,8 @@
 
 <div class="container">
 <p class="msgtxt"> <b><?php echo $message; ?> </b> </p>
-	<form action="<?php	if (isset($pathformessage)) echo $pathformessage ?>" method="get" class="formForQuestion" >
-	
+	<form action="<?php	if (isset($pathformessage)) echo $pathformessage ?>" method="post" class="formForQuestion" >
+		<input type="hidden" name="select" value="<?php	$tableName	?>">
 		<input type="submit" class="buttonClass" value="  ОК  " >
 	</form>
 </div>
