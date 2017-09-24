@@ -10,24 +10,27 @@
 <body>
 	<?php		include_once $_SERVER['DOCUMENT_ROOT'] . "/directorys/fragments/pdo.php";
 
-	$sql="SELECT column_name, column_default, data_type 
+	$sql="SELECT column_name 
 	FROM INFORMATION_SCHEMA.COLUMNS 
 	WHERE table_name = :tableName";
 
 	$s=$pdo->prepare($sql);
 	$s->bindValue(':tableName', $_POST['select']);
 	$s->execute();
-	$resultcolumn=$s->fetchAll();
+	$resultcolumn=$s->fetchAll(PDO::FETCH_COLUMN, 0);
 	$listOfColumns="";
+	$listOfColumnsWithoutId="";
 
 	foreach ($resultcolumn as $item) {
-		
-			$listOfColumns=$listOfColumns . $item['column_name'] .', ';
-		
+			$listOfColumns=$listOfColumns . $item .', ';
 	}
-
+	foreach ($resultcolumn as $item) {
+		if ($item<>'id')
+			$listOfColumnsWithoutId=$listOfColumnsWithoutId . $item .', ';
+	}
 	 $listOfColumns= substr($listOfColumns, 0, -2);
-	 $tableName=$_POST['select'];
+	 $listOfColumnsWithoutId= substr($listOfColumnsWithoutId, 0, -2);
+	    $tableName=$_POST['select'];
 		$sql="SELECT $listOfColumns FROM $tableName";
 		$s=$pdo->query($sql);
 		$u=$s->fetchAll(); ?>
@@ -39,11 +42,10 @@
 		
 		<tr>
 			<?php	foreach ($resultcolumn as $item2) :
-				$columnName=$item2['column_name'];
-				if ($columnName<>'id') :
+				$columnName=$item2;
 				?>
 				<td><?php	echo $item[$columnName]	?></td>
-			<?php	endif; endforeach	?> <td><input type="checkbox" name="chbxarray[]" value="<?php	echo $item['id']	?>"></td>
+			<?php	 endforeach	?> <td><input type="checkbox" name="chbxarray[]" value="<?php	echo $item['id']	?>"></td>
 		</tr>
 		<?php	endforeach	?>
 	</table>
@@ -52,10 +54,13 @@
 	<a href="..">Вернуться</a>
 
 </form>
-<?php	PRINT_R($resultcolumn['column_name'])	?>
+
 <form action="index.php" method="post">
 	<input type="submit" name="addButton" value="Добавить">
 	<input type="hidden" name="transferTableName" value="<?php	echo $tableName	?>">
+	<input type="hidden" name="numberFields" value="<?php	echo count($resultcolumn)	?>">
+	<input type="hidden" name="listOfColumnsWithoutId" value="<?php	echo $listOfColumnsWithoutId	?>">
+
 </form>
 </body>
 </html>

@@ -15,9 +15,27 @@ if (isset($_POST['delete']) and $_POST['delete']=='Удалить') {
 	}
 }
 
+
+
 if (isset($_POST['addButton']) and $_POST['addButton']=='Добавить') {
 	$tableName=$_POST['transferTableName'];
-	
+	$numberFields=$_POST['numberFields'];
+	$listOfColumnsWithoutId=$_POST['listOfColumnsWithoutId'];
 
+include "editform.php";
+exit();
 	
+}
+
+if (isset($_POST['addFieldsButton']) and $_POST['addFieldsButton']=='Добавить') {
+
+$stringOfValues = implode(",", $_POST['stringOfValues']);
+$tableName=$_POST['tableName'];
+$listOfColumnsWithoutId=$_POST['listOfColumnsWithoutId'];
+
+$sql="INSERT INTO $tableName ($listOfColumnsWithoutId) VALUES
+($stringOfValues)";
+echo $sql;
+$pdo->exec($sql);
+
 }
