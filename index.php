@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
+<div class="container">
 	<?php	
 	include $_SERVER['DOCUMENT_ROOT'] . "/directorys/fragments/pdo.php";
 $sql="SELECT table_name FROM information_schema.tables 
@@ -22,6 +23,6 @@ $u=$s->fetchAll(PDO::FETCH_COLUMN, 0)
 <?php	endforeach	?>
     </select>
 <input type="submit" value="Перейти">
-</form>
+</form></div>
 </body>
 </html>

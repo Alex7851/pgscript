@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="../styles/styles.css">
 </head>
 <body>
+<a href="..">Вернуться</a>
 	<?php		include_once $_SERVER['DOCUMENT_ROOT'] . "/directorys/fragments/pdo.php";
 
 	$sql="SELECT column_name 
@@ -31,30 +32,35 @@
 	 $listOfColumns= substr($listOfColumns, 0, -2);
 	 $listOfColumnsWithoutId= substr($listOfColumnsWithoutId, 0, -2);
 	    $tableName=$_POST['select'];
-		$sql="SELECT $listOfColumns FROM $tableName";
+		$sql="SELECT $listOfColumns FROM $tableName ORDER BY id";
 		$s=$pdo->query($sql);
 		$u=$s->fetchAll(); ?>
+		<div class="container">
 <form action="index.php" method="post">
 	<table class="outtable">
-		<?php	foreach ($u as $item) : 
-		?>
-		
-		
+		<tr>
+			<?php	foreach ($resultcolumn as $item2) :?>
+				<th><?php echo $item2 ?></th>
+			<?php	endforeach	?> <th></th>
+		</tr>
+
+		<?php	foreach ($u as $item) : ?>
 		<tr>
 			<?php	foreach ($resultcolumn as $item2) :
 				$columnName=$item2;
 				?>
 				<td><?php	echo $item[$columnName]	?></td>
-			<?php	 endforeach	?> <td><input type="checkbox" name="chbxarray[]" value="<?php	echo $item['id']	?>"></td>
+			<?php	 endforeach	?>
+			<td><input type="checkbox" name="chbxarray[]" value="<?php	echo $item['id']	?>"></td>
 		</tr>
 		<?php	endforeach	?>
 	</table>
 	<input type="hidden" name="transferTableName" value="<?php	echo $tableName	?>">
 	<input type="hidden" name="numberFields" value="<?php	echo count($resultcolumn)	?>">
 	<input type="hidden" name="listOfColumnsWithoutId" value="<?php	echo $listOfColumnsWithoutId	?>">
-	<input type="submit" name="editButton" value="Редактировать">
-	<input type="submit" name="delete" value="Удалить">
-	<a href="..">Вернуться</a>
+	<input type="submit" class="marginx"	name="editButton" value="Редактировать">
+	<input type="submit" class="marginx"	name="delete" value="Удалить">
+	
 
 </form>
 
@@ -64,6 +70,6 @@
 	<input type="hidden" name="numberFields" value="<?php	echo count($resultcolumn)	?>">
 	<input type="hidden" name="listOfColumnsWithoutId" value="<?php	echo $listOfColumnsWithoutId	?>">
 
-</form>
+</form> </div>
 </body>
 </html>

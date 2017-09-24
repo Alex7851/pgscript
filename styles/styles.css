@@ -27,6 +27,19 @@ body {
   padding: 0;
   margin: 0;
 }
+.container {
+  width: 200vh;
+  height: 100vh;
+  background-image: url("pic/1.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+.container .marginx {
+  margin: 10px;
+}
 .main {
   margin-top: 50px;
 }
@@ -211,7 +224,7 @@ body {
   float: right;
 }
 .outtable {
-  margin: 0 auto;
+  margin: 20px auto;
   font-size: 0;
   border-collapse: collapse;
   border: 3px solid;

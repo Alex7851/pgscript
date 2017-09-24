@@ -14,6 +14,8 @@ if (isset($_POST['delete']) and $_POST['delete']=='Удалить') {
 		$s->bindValue(":id", $itemId);
 		$s->execute();
 	}
+	$_POST['select']=$tableName;
+include 'mainform.php'; exit();
 }
 
 
@@ -47,6 +49,8 @@ $listOfColumnsWithoutId=$_POST['listOfColumnsWithoutId'];
 $sql="INSERT INTO $tableName ($listOfColumnsWithoutId) VALUES
 ($stringOfValues)";
 $pdo->exec($sql);
+$_POST['select']=$tableName;
+include 'mainform.php'; exit();
 }
 
 // БЛОК РЕДАКТИРОВАНИЯ
@@ -83,4 +87,6 @@ $idForEdit=$_POST['idForEdit'];
 $sql="UPDATE $tableName SET ($listOfColumnsWithoutId) = ($stringOfValues)
   WHERE id=$idForEdit";
 $pdo->exec($sql);
+$_POST['select']=$tableName;
+include 'mainform.php'; exit();
 }
