@@ -35,14 +35,18 @@ exit();
 // Из формы редактирования
 if (isset($_POST['addFieldsButton']) and $_POST['addFieldsButton']=='Добавить') {
 
-$stringOfValues = implode(",", $_POST['stringOfValues']);
+foreach ($_POST['stringOfValues'] as $item) {
+	if (gettype($item)==='string') $item="'" . $item . "'";
+	$masOfValues[]=$item;
+}
+
+$stringOfValues = implode(",", $masOfValues);
 $tableName=$_POST['tableName'];
 $listOfColumnsWithoutId=$_POST['listOfColumnsWithoutId'];
 
 $sql="INSERT INTO $tableName ($listOfColumnsWithoutId) VALUES
 ($stringOfValues)";
 $pdo->exec($sql);
-
 }
 
 // БЛОК РЕДАКТИРОВАНИЯ
@@ -66,7 +70,12 @@ exit();
 // Из формы редактирования
 if (isset($_POST['addFieldsButton']) and $_POST['addFieldsButton']=='Изменить') {
 
-$stringOfValues = implode(",", $_POST['stringOfValues']);
+foreach ($_POST['stringOfValues'] as $item) {
+	if (gettype($item)==='string') $item="'" . $item . "'";
+	$masOfValues[]=$item;
+}
+
+$stringOfValues = implode(",", $masOfValues);
 $tableName=$_POST['tableName'];
 $listOfColumnsWithoutId=$_POST['listOfColumnsWithoutId'];
 $idForEdit=$_POST['idForEdit'];
