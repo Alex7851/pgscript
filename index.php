@@ -14,7 +14,8 @@
 $sql="SELECT table_name FROM information_schema.tables 
 	  WHERE table_schema='public'";
 $s=$pdo->query($sql);
-$u=$s->fetchAll(PDO::FETCH_COLUMN, 0)
+$u=$s->fetchAll(PDO::FETCH_COLUMN, 0);
+unset($_GET);
 		?>
 <form action="workform/mainform.php" method="post">
 	<select name="select" size="1">

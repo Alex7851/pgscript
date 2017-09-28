@@ -8,8 +8,15 @@
 	<link rel="stylesheet" href="../styles/styles.css">
 </head>
 <body>
-<a href="..">Вернуться</a>
-	<?php		include_once $_SERVER['DOCUMENT_ROOT'] . "/directorys/fragments/pdo.php";
+<a href="..">Вернуться</a><?php		include_once $_SERVER['DOCUMENT_ROOT'] . "/directorys/fragments/pdo.php";
+$limit=5;
+
+
+
+if (!isset($_POST['select'])) {
+	$_POST['select']=$_GET['select'];
+}
+
 
 	$sql="SELECT column_name 
 	FROM INFORMATION_SCHEMA.COLUMNS 
@@ -21,6 +28,33 @@
 	$resultcolumn=$s->fetchAll(PDO::FETCH_COLUMN, 0);
 	$listOfColumns="";
 	$listOfColumnsWithoutId="";
+$tableName=$_POST['select'];
+$s=$pdo->query("SELECT count(*) FROM $tableName");
+$u=$s->fetch();
+$maxOffset=$u[0];
+if (!isset($offset)) {
+	$offset=0;
+}
+
+
+if (isset($_GET['forward'])) {
+
+
+	$offset=$_GET['offset'];
+	if ($offset<($maxOffset-$limit)) {
+		$offset=$offset+ $limit;
+	}
+	
+}
+
+if (isset($_GET['backward'])) {
+	$offset=$_GET['offset'];
+	$offset=$offset - $limit;
+	if ($offset<0) $offset=0;
+}
+
+
+
 
 	foreach ($resultcolumn as $item) {
 			$listOfColumns=$listOfColumns . $item .', ';
@@ -32,11 +66,14 @@
 	 $listOfColumns= substr($listOfColumns, 0, -2);
 	 $listOfColumnsWithoutId= substr($listOfColumnsWithoutId, 0, -2);
 	    $tableName=$_POST['select'];
-		$sql="SELECT $listOfColumns FROM $tableName ORDER BY id";
+
+	    if ($maxOffset<>0) :
+		$sql="SELECT $listOfColumns FROM $tableName ORDER BY id LIMIT $limit OFFSET $offset";
 		$s=$pdo->query($sql);
 		$u=$s->fetchAll(); ?>
 		<div class="container">
 <form action="index.php" method="post">
+<?php		?>
 	<table class="outtable">
 		<tr>
 			<?php	foreach ($resultcolumn as $item2) :?>
@@ -55,6 +92,11 @@
 		</tr>
 		<?php	endforeach	?>
 	</table>
+<div>
+	<a href="mainform.php?select=<?php echo $tableName ?>&backward&offset=<?php echo $offset ?>">Назад</a> 
+	<a href="mainform.php?select=<?php echo $tableName ?>&forward&offset=<?php echo $offset ?>">Вперед</a>
+	</div>
+<?php	endif	?>
 	<input type="hidden" name="transferTableName" value="<?php	echo $tableName	?>">
 	<input type="hidden" name="numberFields" value="<?php	echo count($resultcolumn)	?>">
 	<input type="hidden" name="listOfColumnsWithoutId" value="<?php	echo $listOfColumnsWithoutId	?>">

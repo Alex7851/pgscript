@@ -1,4 +1,5 @@
 <?php	
+
 	include_once $_SERVER['DOCUMENT_ROOT'] . "/directorys/fragments/pdo.php";
  // БЛОК УДАЛЕНИЯ
 // _________________________________________________________________________________________________	
@@ -63,7 +64,6 @@ if (isset($_POST['editButton']) and $_POST['editButton']=='Редактиров�
 	$listOfColumnsWithoutId=$_POST['listOfColumnsWithoutId'];
 	$id=$_POST['chbxarray'] [0];
 	$sql="SELECT $listOfColumnsWithoutId FROM $tableName WHERE id=$id";
-	echo $sql;
 	$s=$pdo->query($sql);
 	$masOfEditValues=$s->fetchAll();
 	$buttonName='Изменить';
