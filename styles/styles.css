@@ -229,6 +229,8 @@ body {
   border-collapse: collapse;
   border: 3px solid;
   max-width: 70%;
+  min-width: 50%;
+  table-layout: fixed;
 }
 .outtable td,
 .outtable tr,

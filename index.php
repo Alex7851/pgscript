@@ -20,7 +20,7 @@
 		<form action="workform/mainform.php" method="post">
 			<select name="select" size="1">
 			<?php	foreach ($u as $item):	?>
-		   	 <option  value="<?php	echo $item ?>"><?php	echo $item	?></option>
+		   	 <option  value="<?php	echo $item ?>"><?php echo $item	?></option>
 			<?php	endforeach	?>
 		    </select>
 			<input type="submit" value="Перейти">

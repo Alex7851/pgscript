@@ -58,10 +58,17 @@ if (isset($_POST['editButton']) and $_POST['editButton']=='Редактиров�
 	$tableName=$_POST['transferTableName'];
 	$numberFields=$_POST['numberFields'];
 	$listOfColumnsWithoutId=$_POST['listOfColumnsWithoutId'];
-	$id=$_POST['chbxarray'] [0];
-	$sql="SELECT $listOfColumnsWithoutId FROM $tableName WHERE id=$id";
-	$s=$pdo->query($sql);
-	$masOfEditValues=$s->fetchAll();
+
+	$sql="SELECT $listOfColumnsWithoutId FROM $tableName WHERE id=:id";
+	$s=$pdo->prepare($sql);
+	foreach ($_POST['chbxarray'] as $item) {
+		$s->bindValue(':id', $item);
+		$s->execute();
+		$masOfEditValues[]=$s->fetch();
+	}
+	
+	
+	
 	$buttonName='Изменить';
 	include "editform.php";
 	exit();
@@ -70,19 +77,31 @@ if (isset($_POST['editButton']) and $_POST['editButton']=='Редактиров�
 // Из формы редактирования
 if (isset($_POST['addFieldsButton']) and $_POST['addFieldsButton']=='Изменить') {
 
-	foreach ($_POST['stringOfValues'] as $item) {
-		if (gettype($item)==='string') $item="'" . $item . "'";
-		$masOfValues[]=$item;
+	for ($j=0; $j < $_POST['numberOfIds']; $j++) {
+		for ($i=0; $i<$_POST['numberFields']-1; $i++) {
+			$masOfValues[$j][$i]="'" . $_POST['stringOfValues'][$j][$i] . "'"	;
+		}
 	}
-
-	$stringOfValues = implode(",", $masOfValues);
+ 
 	$tableName=$_POST['tableName'];
 	$listOfColumnsWithoutId=$_POST['listOfColumnsWithoutId'];
-	$idForEdit=$_POST['idForEdit'];
+	$masOfIds= explode(',', $_POST['stringOfIds']);
 
-	$sql="UPDATE $tableName SET ($listOfColumnsWithoutId) = ($stringOfValues)
+	for ($j=0; $j < $_POST['numberOfIds']; $j++) { 
+		$stringOfValues = implode(", ", $masOfValues[$j]);
+		$idForEdit=$masOfIds[$j];
+
+		$sql="UPDATE $tableName SET ($listOfColumnsWithoutId) = ($stringOfValues)
 	  WHERE id=$idForEdit";
+	 
 	$pdo->exec($sql);
+	}
+
+	
+	
+	
+
+	
 	$_POST['select']=$tableName;
 	include 'mainform.php'; exit();
 }
