@@ -8,22 +8,46 @@
 	<link rel="stylesheet" href="../styles/styles.css">
 </head>
 <body>
+<script>
+	var counter=1;
+function addInput(){
+
+	var numberFields=<?php echo $numberFields ?>;
+	var marker=document.getElementById('marker');
+	var trElem=document.createElement("tr");
+	marker.appendChild(trElem);
+
+	for (var i = 1; i < numberFields; i++) {
+
+		var tdElem=document.createElement("td");
+		trElem.appendChild(tdElem);
+		var inputField = document.createElement("input");
+                inputField.type = "text";
+                inputField.name = "stringOfValues[" + counter +"][]";
+				tdElem.appendChild(inputField);
+	}
+     counter++;
+}
+
+</script>
 	<div class="container">
 	<form action="index.php" method="post">
 		<?php	$arrOfHeaders=explode(', ', $listOfColumnsWithoutId);
-			$stringOfIds=implode(',', $_POST['chbxarray']) ?>
-		<table class="outtable">
+			$jmax=1;
+			if (isset($_POST['chbxarray'])) { $stringOfIds=implode(',', $_POST['chbxarray']); $jmax=count($_POST['chbxarray']); }?>
+		<table id="marker"  class="outtable">
 			<tr> <?php	for ($i=1; $i<$numberFields; $i++):	?>
 					<td style="background: #E6E6E9">
 						<label for=""> <?php	echo $arrOfHeaders[$i-1]	?></label>
 					</td> 
 				<?php	endfor	?>
 			</tr>
-		<?php	for ($j=0; $j < count($_POST['chbxarray']); $j++) :	?>
-			<tr style="padding: 0; margin: 0">
+
+		<?php	for ($j=0; $j < $jmax; $j++) :	?>
+			<tr  	>
 				<?php	for ($i=1; $i<$numberFields; $i++):	?>
-					<td style="padding: 0; margin: 0; background: white">
-						<input type="text" style="border: 0" name="stringOfValues[<?php echo $j ?>][]" value="<?php	if (isset($_POST['editButton']) and $_POST['editButton']=='Редактировать') echo  $masOfEditValues[$j][$i-1]; ?>">
+					<td style="background: white">
+						<input type="text" style="border: 0" name="stringOfValues[<?php echo $j ?>][]" value="<?php	if (isset($_POST['editButton'])) echo  $masOfEditValues[$j][$i-1]; ?>">
 					</td>
 				<?php	endfor	?> 
 			</tr>
@@ -31,13 +55,14 @@
 		</table>
 		<input type="submit" name="addFieldsButton" value="<?php echo $buttonName ?>">
 		<input type="hidden" name="tableName" value="<?php	echo $tableName	?>">
-		<input type="hidden" name="numberOfIds" value="<?php	echo count($_POST['chbxarray'])	?>">
+		<input type="hidden" name="numberOfIds" value="<?php	echo $jmax	?>">
 		<input type="hidden" name="stringOfIds" value="<?php	echo $stringOfIds ?>">
 		<input type="hidden" name="numberFields" value="<?php	echo $numberFields	?>">
 		<input type="hidden" name="listOfColumnsWithoutId"  value="<?php	echo $listOfColumnsWithoutId ?>">
 
 
 	</form>
+	<input type="submit" class="<?php if ($buttonName=="Изменить") echo "hideButton" ?>"	 value="Добавить строку" onclick="addInput()">
 	</div>
 </body>
 </html>

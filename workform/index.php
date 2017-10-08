@@ -4,7 +4,7 @@
  
 // БЛОК УДАЛЕНИЯ
 // _________________________________________________________________________________________________	
-if (isset($_POST['delete']) and $_POST['delete']=='Удалить') {
+if (isset($_POST['delete'])) {
 	$tableName=$_POST['transferTableName'];
 
 	$sql="DELETE FROM $tableName WHERE id=:id";
@@ -21,7 +21,7 @@ if (isset($_POST['delete']) and $_POST['delete']=='Удалить') {
 // _________________________________________________________________________________________________	
 
  // Из формы просмотра
-if (isset($_POST['addButton']) and $_POST['addButton']=='Добавить') {
+if (isset($_POST['addButton'])) {
 	
 	$tableName=$_POST['transferTableName'];
 	$numberFields=$_POST['numberFields'];
@@ -33,19 +33,36 @@ if (isset($_POST['addButton']) and $_POST['addButton']=='Добавить') {
 
 // Из формы редактирования
 if (isset($_POST['addFieldsButton']) and $_POST['addFieldsButton']=='Добавить') {
+print_r($_POST['stringOfValues']);
+$_POST['numberOfIds']= count($_POST['stringOfValues']);
 
-	foreach ($_POST['stringOfValues'] as $item) {
-		if (gettype($item)==='string') $item="'" . $item . "'";
-		$masOfValues[]=$item;
+	for ($j=0; $j < $_POST['numberOfIds']; $j++) {
+		for ($i=0; $i<$_POST['numberFields']-1; $i++) {
+			$masOfValues[$j][$i]="'" . $_POST['stringOfValues'][$j][$i] . "'"	;
+		}
 	}
 
-	$stringOfValues = implode(",", $masOfValues);
-	$tableName=$_POST['tableName'];
+
+$tableName=$_POST['tableName'];
 	$listOfColumnsWithoutId=$_POST['listOfColumnsWithoutId'];
 
-	$sql="INSERT INTO $tableName ($listOfColumnsWithoutId) VALUES
+
+for ($j=0; $j < $_POST['numberOfIds']; $j++) { 
+		$stringOfValues = implode(", ", $masOfValues[$j]);
+		
+		
+	 $sql="INSERT INTO $tableName ($listOfColumnsWithoutId) VALUES
 	($stringOfValues)";
 	$pdo->exec($sql);
+	
+	}
+
+
+
+
+	
+
+	
 	$_POST['select']=$tableName;
 	include 'mainform.php'; exit();
 }
@@ -54,7 +71,7 @@ if (isset($_POST['addFieldsButton']) and $_POST['addFieldsButton']=='Добав�
 // _________________________________________________________________________________________________	
 
  // Из формы просмотра
-if (isset($_POST['editButton']) and $_POST['editButton']=='Редактировать') {
+if (isset($_POST['editButton'])) {
 	$tableName=$_POST['transferTableName'];
 	$numberFields=$_POST['numberFields'];
 	$listOfColumnsWithoutId=$_POST['listOfColumnsWithoutId'];
