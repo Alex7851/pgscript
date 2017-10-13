@@ -19,7 +19,7 @@
 .clrr {
   color: red;
   padding: auto 0;
-  font-size: 20px;
+  font-size: 50px;
   animation: color_change 15s linear alternate infinite;
 }
 body {
@@ -43,6 +43,31 @@ body {
 }
 .hideButton {
   display: none;
+}
+.squareframe {
+  background: #e8f1ff;
+  height: auto;
+  width: auto;
+  margin: 20px auto;
+  padding: 10px;
+  border-radius: 7px;
+  border: 1px solid black;
+  box-shadow: 0 0 7px;
+  display: inline-block;
+}
+.squareframe .forsign {
+  font-size: 35px;
+  color: red;
+  margin-right: 7px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.squareframe .msgtxt {
+  font-size: 15px;
+  font-weight: bold;
+  text-align: left;
+  display: inline-block;
+  font-family: Arial;
 }
 .container {
   width: 200vh;
@@ -188,11 +213,6 @@ body {
 .formForQuestion .buttonClass,
 .frameForQuestion .buttonClass {
   padding: 2px 5px ;
-}
-.msgtxt {
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
 }
 .container {
   width: 200vh;

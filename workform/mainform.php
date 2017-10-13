@@ -96,15 +96,10 @@
 			<input type="hidden" name="listOfColumnsWithoutId" value="<?php	echo $listOfColumnsWithoutId	?>">
 			<input type="submit" class="marginx"	name="editButton" value="Редактировать">
 			<input type="submit" class="marginx"	name="delete" value="Удалить">
-		</form>
-
-		<form action="index.php" method="post">
 			<input type="submit" name="addButton" value="Добавить">
-			<input type="hidden" name="transferTableName" value="<?php	echo $tableName	?>">
-			<input type="hidden" name="numberFields" value="<?php	echo count($resultcolumn)	?>">
-			<input type="hidden" name="listOfColumnsWithoutId" value="<?php	echo $listOfColumnsWithoutId	?>">
-
 		</form>
+
+		
 	</div>
 </body>
 </html>

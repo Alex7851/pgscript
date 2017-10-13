@@ -9,16 +9,26 @@
 	<link rel="stylesheet" href="../styles/styles.css">
 	<link rel="stylesheet" href="../../styles/styles.css">
 
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="../styles/font-awesome.css">
+	<link rel="stylesheet" href="../../styles/font-awesome.css">
 
 </head>
 <body>
 
+
+
 <div class="container">
-<p class="msgtxt"> <b><?php echo $message; ?> </b> </p>
-	<form action="<?php	if (isset($pathformessage)) echo $pathformessage ?>" method="post" class="formForQuestion" >
-		<input type="hidden" name="select" value="<?php	$tableName	?>">
-		<input type="submit" class="buttonClass" value="  ОК  " >
-	</form>
+	<div class="squareframe">
+		<div>
+			<i style="" class="fa fa-exclamation-circle forsign" aria-hidden="true"></i>
+			 <p class="msgtxt"> <?php echo $message; ?>  </p>
+		</div>
+		<form style="display: block" action="<?php	if (isset($pathformessage)) echo $pathformessage ?>" method="post" class="formForQuestion" >
+			<input type="hidden" name="select" value="<?php	echo $_POST['transferTableName']	?>">
+			<input type="submit" class="buttonClass" value="  ОК  " >
+		</form>
+	</div>
 </div>
 </body>
 </html>

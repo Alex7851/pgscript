@@ -5,6 +5,15 @@
 // БЛОК УДАЛЕНИЯ
 // _________________________________________________________________________________________________	
 if (isset($_POST['delete'])) {
+
+
+	if (!isset($_POST['chbxarray'])) {
+		$message="Не выбрано ни одного элемента для удаления";
+		$pathformessage="mainform.php";
+		include "../fragments/msg.html";
+		exit();
+	}
+
 	$tableName=$_POST['transferTableName'];
 
 	$sql="DELETE FROM $tableName WHERE id=:id";
@@ -22,7 +31,14 @@ if (isset($_POST['delete'])) {
 
  // Из формы просмотра
 if (isset($_POST['addButton'])) {
-	
+
+	if (isset($_POST['chbxarray'])) {
+			$message="Для добавления новых строк снимите выделение с существующей строки.";
+			$pathformessage="mainform.php";
+			include "../fragments/msg.html";
+			exit();
+	}
+
 	$tableName=$_POST['transferTableName'];
 	$numberFields=$_POST['numberFields'];
 	$listOfColumnsWithoutId=$_POST['listOfColumnsWithoutId'];
@@ -33,8 +49,7 @@ if (isset($_POST['addButton'])) {
 
 // Из формы редактирования
 if (isset($_POST['addFieldsButton']) and $_POST['addFieldsButton']=='Добавить') {
-print_r($_POST['stringOfValues']);
-$_POST['numberOfIds']= count($_POST['stringOfValues']);
+	$_POST['numberOfIds']= count($_POST['stringOfValues']);
 
 	for ($j=0; $j < $_POST['numberOfIds']; $j++) {
 		for ($i=0; $i<$_POST['numberFields']-1; $i++) {
@@ -43,26 +58,17 @@ $_POST['numberOfIds']= count($_POST['stringOfValues']);
 	}
 
 
-$tableName=$_POST['tableName'];
+	$tableName=$_POST['tableName'];
 	$listOfColumnsWithoutId=$_POST['listOfColumnsWithoutId'];
 
 
-for ($j=0; $j < $_POST['numberOfIds']; $j++) { 
+	for ($j=0; $j < $_POST['numberOfIds']; $j++) { 
+		
 		$stringOfValues = implode(", ", $masOfValues[$j]);
-		
-		
-	 $sql="INSERT INTO $tableName ($listOfColumnsWithoutId) VALUES
-	($stringOfValues)";
-	$pdo->exec($sql);
-	
+		$sql="INSERT INTO $tableName ($listOfColumnsWithoutId) VALUES ($stringOfValues)";
+		$pdo->exec($sql);
 	}
 
-
-
-
-	
-
-	
 	$_POST['select']=$tableName;
 	include 'mainform.php'; exit();
 }
@@ -72,6 +78,14 @@ for ($j=0; $j < $_POST['numberOfIds']; $j++) {
 
  // Из формы просмотра
 if (isset($_POST['editButton'])) {
+
+	if (!isset($_POST['chbxarray'])) {
+			$message="Не выбрано ни одного элемента для редактирования.";
+			$pathformessage="mainform.php";
+			include "../fragments/msg.html";
+			exit();
+	}
+
 	$tableName=$_POST['transferTableName'];
 	$numberFields=$_POST['numberFields'];
 	$listOfColumnsWithoutId=$_POST['listOfColumnsWithoutId'];
@@ -83,8 +97,6 @@ if (isset($_POST['editButton'])) {
 		$s->execute();
 		$masOfEditValues[]=$s->fetch();
 	}
-	
-	
 	
 	$buttonName='Изменить';
 	include "editform.php";
@@ -114,11 +126,6 @@ if (isset($_POST['addFieldsButton']) and $_POST['addFieldsButton']=='Измен�
 	$pdo->exec($sql);
 	}
 
-	
-	
-	
-
-	
 	$_POST['select']=$tableName;
 	include 'mainform.php'; exit();
 }
