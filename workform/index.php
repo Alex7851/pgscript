@@ -53,7 +53,8 @@ if (isset($_POST['addFieldsButton']) and $_POST['addFieldsButton']=='Добав�
 
 	for ($j=0; $j < $_POST['numberOfIds']; $j++) {
 		for ($i=0; $i<$_POST['numberFields']-1; $i++) {
-			$masOfValues[$j][$i]="'" . $_POST['stringOfValues'][$j][$i] . "'"	;
+			$st = preg_replace ("/[^a-zA-ZА-Яа-я0-9\s]/u","",$_POST['stringOfValues'][$j][$i]);
+			$masOfValues[$j][$i]="'" . $st . "'"	;
 		}
 	}
 
@@ -66,7 +67,16 @@ if (isset($_POST['addFieldsButton']) and $_POST['addFieldsButton']=='Добав�
 		
 		$stringOfValues = implode(", ", $masOfValues[$j]);
 		$sql="INSERT INTO $tableName ($listOfColumnsWithoutId) VALUES ($stringOfValues)";
-		$pdo->exec($sql);
+		
+		try {
+			$pdo->exec($sql);
+		} catch (Exception $e) {
+			$message="В процессе добавления новых строк произошла ошибка. Убедитесь что вводимые данные соответствуют присвоенным их типам";
+			$pathformessage="mainform.php";
+			include "../fragments/msg.html";
+			exit();
+		}
+		
 	}
 
 	$_POST['select']=$tableName;
@@ -108,7 +118,9 @@ if (isset($_POST['addFieldsButton']) and $_POST['addFieldsButton']=='Измен�
 
 	for ($j=0; $j < $_POST['numberOfIds']; $j++) {
 		for ($i=0; $i<$_POST['numberFields']-1; $i++) {
-			$masOfValues[$j][$i]="'" . $_POST['stringOfValues'][$j][$i] . "'"	;
+			$st = preg_replace ("/[^a-zA-ZА-Яа-я0-9\s]/u","",$_POST['stringOfValues'][$j][$i]);
+			$masOfValues[$j][$i]="'" . $st . "'"	;
+			
 		}
 	}
  
@@ -122,8 +134,16 @@ if (isset($_POST['addFieldsButton']) and $_POST['addFieldsButton']=='Измен�
 
 		$sql="UPDATE $tableName SET ($listOfColumnsWithoutId) = ($stringOfValues)
 	  WHERE id=$idForEdit";
-	 
-	$pdo->exec($sql);
+
+	 try {
+	 		$pdo->exec($sql);
+	 } catch (Exception $e) {
+	 	$message="В процессе редактирования таблицы произошла ошибка. Убедитесь что все данные соответствуют присвоенным их типам";
+			$pathformessage="mainform.php";
+			include "../fragments/msg.html";
+			exit();
+	 }
+
 	}
 
 	$_POST['select']=$tableName;

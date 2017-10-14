@@ -8,14 +8,8 @@
 	<link rel="stylesheet" href="styles/styles.css">
 	<link rel="stylesheet" href="../styles/styles.css">
 	<link rel="stylesheet" href="../../styles/styles.css">
-
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="../styles/font-awesome.css">
-	<link rel="stylesheet" href="../../styles/font-awesome.css">
-
 </head>
 <body>
-
 
 
 <div class="container">
@@ -25,7 +19,7 @@
 			 <p class="msgtxt"> <?php echo $message; ?>  </p>
 		</div>
 		<form style="display: block" action="<?php	if (isset($pathformessage)) echo $pathformessage ?>" method="post" class="formForQuestion" >
-			<input type="hidden" name="select" value="<?php	echo $_POST['transferTableName']	?>">
+			<input type="hidden" name="select" value="<?php if	(isset($_POST['transferTableName'])) {	echo $_POST['transferTableName'];} else {echo $_POST['tableName'];}	?>">
 			<input type="submit" class="buttonClass" value="  ОК  " >
 		</form>
 	</div>

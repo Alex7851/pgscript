@@ -45,7 +45,7 @@ body {
   display: none;
 }
 .squareframe {
-  background: #e8f1ff;
+  background: #e5e5e5;
   height: auto;
   width: auto;
   margin: 20px auto;
@@ -56,7 +56,7 @@ body {
   display: inline-block;
 }
 .squareframe .forsign {
-  font-size: 35px;
+  font-size: 30px;
   color: red;
   margin-right: 7px;
   display: inline-block;
