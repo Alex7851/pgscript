@@ -62,15 +62,19 @@ if (isset($_POST['addFieldsButton']) and $_POST['addFieldsButton']=='Добав�
 	$tableName=$_POST['tableName'];
 	$listOfColumnsWithoutId=$_POST['listOfColumnsWithoutId'];
 
-
+	
 	for ($j=0; $j < $_POST['numberOfIds']; $j++) { 
 		
 		$stringOfValues = implode(", ", $masOfValues[$j]);
 		$sql="INSERT INTO $tableName ($listOfColumnsWithoutId) VALUES ($stringOfValues)";
-		
-		try {
+	
+		try {$pdo->beginTransaction();
 			$pdo->exec($sql);
+			$pdo->commit();
+
 		} catch (Exception $e) {
+			
+$pdo->rollBack();
 			$message="В процессе добавления новых строк произошла ошибка. Убедитесь что вводимые данные соответствуют присвоенным их типам";
 			$pathformessage="mainform.php";
 			include "../fragments/msg.html";
@@ -78,7 +82,6 @@ if (isset($_POST['addFieldsButton']) and $_POST['addFieldsButton']=='Добав�
 		}
 		
 	}
-
 	$_POST['select']=$tableName;
 	include 'mainform.php'; exit();
 }
