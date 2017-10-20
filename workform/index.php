@@ -62,26 +62,30 @@ if (isset($_POST['addFieldsButton']) and $_POST['addFieldsButton']=='Добав�
 	$tableName=$_POST['tableName'];
 	$listOfColumnsWithoutId=$_POST['listOfColumnsWithoutId'];
 
-	
-	for ($j=0; $j < $_POST['numberOfIds']; $j++) { 
-		
-		$stringOfValues = implode(", ", $masOfValues[$j]);
-		$sql="INSERT INTO $tableName ($listOfColumnsWithoutId) VALUES ($stringOfValues)";
-	
-		try {$pdo->beginTransaction();
-			$pdo->exec($sql);
-			$pdo->commit();
+	try {
+		$pdo->beginTransaction();
 
-		} catch (Exception $e) {
+		for ($j=0; $j < $_POST['numberOfIds']; $j++) { 
 			
-$pdo->rollBack();
-			$message="В процессе добавления новых строк произошла ошибка. Убедитесь что вводимые данные соответствуют присвоенным их типам";
-			$pathformessage="mainform.php";
-			include "../fragments/msg.html";
-			exit();
+			$stringOfValues = implode(", ", $masOfValues[$j]);
+			$sql="INSERT INTO $tableName ($listOfColumnsWithoutId) VALUES ($stringOfValues)";
+			$pdo->exec($sql);
 		}
 		
-	}
+		$pdo->commit();
+		
+		} 
+	catch (Exception $e) {
+			
+		$pdo->rollBack();
+		$message="В процессе добавления новых строк произошла ошибка. Данные не были внесены. Убедитесь что вводимые данные соответствуют присвоенным их типам.";
+		$pathformessage="mainform.php";
+		include "../fragments/msg.html";
+		exit();
+		
+		}
+		
+	
 	$_POST['select']=$tableName;
 	include 'mainform.php'; exit();
 }
@@ -131,23 +135,30 @@ if (isset($_POST['addFieldsButton']) and $_POST['addFieldsButton']=='Измен�
 	$listOfColumnsWithoutId=$_POST['listOfColumnsWithoutId'];
 	$masOfIds= explode(',', $_POST['stringOfIds']);
 
-	for ($j=0; $j < $_POST['numberOfIds']; $j++) { 
-		$stringOfValues = implode(", ", $masOfValues[$j]);
-		$idForEdit=$masOfIds[$j];
 
-		$sql="UPDATE $tableName SET ($listOfColumnsWithoutId) = ($stringOfValues)
-	  WHERE id=$idForEdit";
 
 	 try {
-	 		$pdo->exec($sql);
-	 } catch (Exception $e) {
-	 	$message="В процессе редактирования таблицы произошла ошибка. Убедитесь что все данные соответствуют присвоенным их типам";
+	 	$pdo->beginTransaction();
+ 		
+ 		for ($j=0; $j < $_POST['numberOfIds']; $j++) { 
+		
+			$stringOfValues = implode(", ", $masOfValues[$j]);
+			$idForEdit=$masOfIds[$j];
+			$sql="UPDATE $tableName SET ($listOfColumnsWithoutId) = ($stringOfValues)
+		 	WHERE id=$idForEdit";
+			$pdo->exec($sql);
+		
+			}
+
+		$pdo->commit();
+	 }
+	 catch (Exception $e) {
+	 	$pdo->rollBack();
+	 	$message="В процессе редактирования таблицы произошла ошибка. Изменения не были внесены. Убедитесь что все данные соответствуют присвоенным их типам";
 			$pathformessage="mainform.php";
 			include "../fragments/msg.html";
 			exit();
 	 }
-
-	}
 
 	$_POST['select']=$tableName;
 	include 'mainform.php'; exit();
