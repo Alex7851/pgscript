@@ -69,6 +69,23 @@ body {
   font-family: sans-serif;
   font-style: italic;
 }
+.likeButton {
+  height: 20px;
+  width: 30px;
+  border: 1px solid #8d8d8d;
+  margin: 1px;
+  background: #ededed;
+  margin-top: -10px;
+  float: left;
+  border-radius: 2px;
+  cursor: default;
+}
+.likeButton:hover {
+  border: 1px solid black;
+}
+.likeButton:active {
+  border: 1px solid red;
+}
 .container {
   width: 200vh;
   height: 100vh;

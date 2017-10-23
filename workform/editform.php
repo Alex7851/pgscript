@@ -29,12 +29,18 @@ function addInput(){
      counter++;
 }
 
+function deleteString() {
+	if (document.getElementById('marker').rows.length>2) { document.getElementById('marker').deleteRow(-1);
+	counter--;}
+}
+
 </script>
 	<div class="container">
 	<form action="index.php" method="post">
 		<?php	$arrOfHeaders=explode(', ', $listOfColumnsWithoutId);
 			$jmax=1;
 			if (isset($_POST['chbxarray'])) { $stringOfIds=implode(',', $_POST['chbxarray']); $jmax=count($_POST['chbxarray']); }?>
+			<div style="display:inline-block">
 		<table id="marker"  class="outtable">
 			<tr> <?php	for ($i=1; $i<$numberFields; $i++):	?>
 					<td style="background: #E6E6E9">
@@ -44,7 +50,7 @@ function addInput(){
 			</tr>
 
 		<?php	for ($j=0; $j < $jmax; $j++) :	?>
-			<tr  	>
+			<tr>
 				<?php	for ($i=1; $i<$numberFields; $i++):	?>
 					<td style="background: white">
 						<input type="text" style="border: 0" name="stringOfValues[<?php echo $j ?>][]" value="<?php	if (isset($_POST['editButton'])) echo  $masOfEditValues[$j][$i-1]; ?>">
@@ -53,7 +59,12 @@ function addInput(){
 			</tr>
 		<?php	endfor	?>
 		</table>
-		<input type="submit" name="addFieldsButton" value="<?php echo $buttonName ?>">
+
+		<a class="<?php if ($buttonName=="Изменить") {echo "hideButton";} else {echo "likeButton";}?>" onclick="addInput()">+</a>
+		<a class="<?php if ($buttonName=="Изменить") {echo "hideButton";} else {echo "likeButton";}?>" onclick="deleteString()">-</a>
+</div>
+<br>
+		<input type="submit" style="text-align: center;" name="addFieldsButton" value="<?php echo $buttonName ?>">
 		<input type="hidden" name="tableName" value="<?php	echo $tableName	?>">
 		<input type="hidden" name="numberOfIds" value="<?php	echo $jmax	?>">
 		<input type="hidden" name="stringOfIds" value="<?php	echo $stringOfIds ?>">
@@ -62,7 +73,7 @@ function addInput(){
 
 
 	</form>
-	<input type="submit" class="<?php if ($buttonName=="Изменить") echo "hideButton" ?>"	 value="Добавить строку" onclick="addInput()">
+	
 	</div>
 </body>
 </html>
